@@ -191,11 +191,15 @@ final class NetteDatabaseDataSourceTest extends TestCase
 		$filter5 = new FilterDate($this->grid, 'date', 'Date', 'date');
 		$filter5->setValue('12. 12. 2012');
 
+		$filter6 = new FilterRange($this->grid, 'range', 'Range', 'id', 'To');
+		$filter6->setValue(['from' => '', 'to' => 0]);
+
 		$s->applyFilterSelect($filter1);
 		$s->applyFilterText($filter2);
 		$s->applyFilterRange($filter3);
 		$s->applyFilterDateRange($filter4);
 		$s->applyFilterDate($filter5);
+		$s->applyFilterRange($filter6);
 
 		$q = $s->getQuery();
 
@@ -214,7 +218,9 @@ final class NetteDatabaseDataSourceTest extends TestCase
 				AND id >= ?
 				AND DATE(created) >= ?
 				AND DATE(created) <= ?
-				AND DATE(date) = ?';
+				AND DATE(date) = ?
+				AND id =< ?
+				';
 
 		Assert::same(trim(preg_replace('/\s+/', ' ', $expected_query)), $q[0]);
 
@@ -228,6 +234,7 @@ final class NetteDatabaseDataSourceTest extends TestCase
 			"2003-02-01",
 			"2149-12-03",
 			"2012-12-12",
+			0,
 		];
 
 		Assert::same($expected_params, $q[1]);

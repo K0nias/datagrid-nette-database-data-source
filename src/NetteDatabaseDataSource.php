@@ -271,11 +271,11 @@ class NetteDatabaseDataSource implements IDataSource
 		$value_from = $conditions[$filter->getColumn()]['from'];
 		$value_to   = $conditions[$filter->getColumn()]['to'];
 
-		if ($value_from) {
+		if ($value_from !== null && $value_from !== '') {
 			$this->applyWhere($filter->getColumn(), $value_from, '>=');
 		}
 
-		if ($value_to) {
+		if ($value_to !== null && $value_to !== '') {
 			$this->applyWhere($filter->getColumn(), $value_to, '<=');
 		}
 	}
